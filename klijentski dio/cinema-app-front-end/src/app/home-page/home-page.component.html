@@ -1,0 +1,49 @@
+<div class="row">
+  <h3 class="text-center">Najnovije dodani filmovi </h3>
+  <hr>
+  <div *ngIf="movies.length > 0 && moviesError == false">
+    <div>
+      <div class="col-sm-12 col-md-4 movie-active" *ngFor="let movie of movies" [routerLink]="['movies/', movie.title, movie.id]">
+        <div *ngIf="movie.imageType != 'undefined' && movie.image">
+          <img class="img-responsive img-height-calendar center-block" src="data:image/{{movie.imageType}};base64,{{movie.image}}" alt="Nedostupna slika"/>
+        </div>
+        <div *ngIf="!(movie.imageType && movie.image)">
+          <img class="img-responsive img-height-calendar center-block" alt="Nedostupna slika"/>
+        </div>        <h4 class="text-center">{{movie.title}}</h4>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="movies.length <= 0 && moviesError == false" class="text-center">
+    <p>Nema filmova</p>
+  </div>
+  <div *ngIf="movies.length <= 0 && moviesError == true" class="text-center">
+    <p>Podatci o filmovima se nisu mogli očitati</p>
+  </div>
+</div>
+
+<div class="row">
+  <h3 class="text-center">Filmovi koji uskoro počinju</h3>
+  <hr>
+  <div *ngIf="startingSoonMovies.length > 0 && startingSoonMoviesError == false">
+    <div>
+      <div class="col-sm-12 col-md-4 movie-active" *ngFor="let movie of startingSoonMovies" [routerLink]="['movies/', movie.title, movie.id]">
+        <div *ngIf="movie.imageType && movie.image">
+          <img class="img-responsive img-height-calendar center-block" src="data:image/{{movie.imageType}};base64,{{movie.image}}" alt="Nedostupna slika"/>
+        </div>
+        <div *ngIf="!(movie.imageType && movie.image)">
+          <img class="img-responsive img-height-calendar center-block" alt="Nedostupna slika"/>
+        </div>        <h4 class="text-center">{{movie.title}}</h4>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="startingSoonMovies.length <= 0 && startingSoonMoviesError== false" class="text-center">
+    <p>Nema filmova</p>
+  </div>
+  <div *ngIf="startingSoonMovies.length <= 0 && startingSoonMoviesError == true" class="text-center">
+    <p>Podatci o filmovima se nisu mogli očitati</p>
+  </div>
+</div>
+
+<button  class="margin-top center-block btn btn-orange" routerLink="movies">Vidi sve filmove</button>
+
+

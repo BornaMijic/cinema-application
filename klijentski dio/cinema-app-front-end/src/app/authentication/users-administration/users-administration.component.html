@@ -1,0 +1,40 @@
+<div>
+  <input class="element-width form-control margin-bottom1 center-block" type="text" placeholder="Pretražuj prema korisničkom imenu" #searchTitle>
+  <button class="btn btn-orange center-block button-width margin-top-button" (click)="filterUsers(searchTitle.value)">Pretraži</button>
+  <hr/>
+</div>
+
+<div *ngIf="errorMessage != ''" class="alert alert-danger">
+  <p class="text-center text-danger">{{errorMessage}}</p>
+</div>
+
+<div class="row" *ngIf="this.users && this.users.length == 0">
+  <div class="col-xs-12">
+    <p class="text-danger text-center margin-button text-size-no-more"> Nema više korisnika</p>
+  </div>
+</div>
+
+<div class="border-item row-space" *ngFor="let user of this.users | paginate: {itemsPerPage: 10, currentPage: pageNumber, totalItems: usersAmount}">
+  <div class="row margin-bottom">
+    <div class="col-xs-12 col-md-4 text-center margin-bottom1">
+      <p>{{user.username}}</p>
+    </div>
+    <div class="col-xs-12 col-md-4 text-center margin-bottom1">
+      <button *ngIf="user.verified && user.role != 'ROLE_ADMIN'" class="btn btn-success" (click)="changeVerified(user)">VERIFICIRAN</button>
+      <button *ngIf="!user.verified && user.role != 'ROLE_ADMIN'" class="btn btn-danger" (click)="changeVerified(user)">NIJE VERIFICIRAN</button>
+    </div>
+    <div class="col-xs-12 col-md-4 text-center margin-bottom1">
+      <button *ngIf="user.active && user.role != 'ROLE_ADMIN'" class="btn btn-success" (click)="changeActive(user)">AKTIVAN</button>
+      <button *ngIf="!user.active && user.role != 'ROLE_ADMIN'" class="btn btn-danger" (click)="changeActive(user)">DEAKTIVIRAN</button>
+    </div>
+  </div>
+  <hr/>
+</div>
+
+
+<pagination-controls class="text-center"
+                     previousLabel=""
+                     nextLabel=""
+                     (pageChange)="onPageChange($event)">
+
+</pagination-controls>

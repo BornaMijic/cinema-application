@@ -1,0 +1,113 @@
+<div class="row">
+  <div *ngIf="loading == true" class="block-paddding text-center">
+    <p>Očitavanje...</p>
+  </div>
+  <div *ngIf="loading == false">
+    <div *ngIf="errorMessage != ''" class="alert alert-danger">
+      <p class="text-center text-danger">{{errorMessage}}</p>
+    </div>
+    <div class="col-xs-12 form-box">
+      <form [formGroup]="movieForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+        <div *ngIf="creatingMovie == true">
+            <label>Naslov</label>
+            <input class="form-control" type="text" name="title" id="title" formControlName="title" placeholder="Naslov filma"/>
+            <div *ngIf="movieForm.get('title')?.errors?.['required'] && (movieForm.get('title')?.dirty || movieForm.get('title')?.touched)">
+              <span class="text-danger">Naslov je obavezan</span>
+            </div>
+            <div *ngIf="movieForm.get('title')?.errors?.['maxlength'] && (movieForm.get('title')?.dirty || movieForm.get('title')?.touched)">
+              <span class="text-danger">Naslov mora imat jednako ili manje od 100 znakova</span>
+            </div>
+            <label>Poster filma</label>
+            <input type="file" accept="image/jpeg, image/png" name="posterFile" id="posterFile" formControlName="posterFile" (change)="selectImage($event)">
+            <div *ngIf="creatingMovie == true && posterImage == null">
+              <span class="text-danger">Poster filma je obavezan</span>
+            </div>
+            <label>Sažetak</label>
+            <textarea class="form-control" rows="25" name="summary" id="summary" formControlName="summary" placeholder="Sažetak filma"></textarea>
+            <div *ngIf="movieForm.get('summary')?.errors?.['required'] && (movieForm.get('summary')?.dirty || movieForm.get('summary')?.touched)">
+              <span class="text-danger">Sažetak je obavezan</span>
+            </div>
+            <div *ngIf="movieForm.get('summary')?.errors?.['maxlength'] && (movieForm.get('summary')?.dirty || movieForm.get('summary')?.touched)">
+              <span class="text-danger">Sažetak mora imat jednako ili manje od 3000 znakova</span>
+            </div>
+            <label>Trajanje filma u minutama</label>
+            <input class="form-control" type="number" name="duration" id="duration" formControlName="duration" placeholder="Minute"/>
+            <div *ngIf="movieForm.get('duration')?.errors?.['required'] && (movieForm.get('duration')?.dirty || movieForm.get('duration')?.touched)">
+              <span class="text-danger" >Trajanje je obavezno</span>
+            </div>
+            <div class="text-danger" *ngIf="movieForm.get('duration')?.errors?.['wrongNumber'] && (movieForm.get('duration')?.dirty || movieForm.get('duration')?.touched)">
+              <span class="text-danger">Trajanje mora biti nula ili pozitivan broj</span>
+            </div>
+            <div class="text-danger" *ngIf="movieForm.get('duration')?.errors?.['maxNumberDuration'] && (movieForm.get('duration')?.dirty || movieForm.get('duration')?.touched)">
+              <span class="text-danger">Trajanje mora biti jednako ili manje od 10000</span>
+            </div>
+          <div class="text-danger" *ngIf="movieForm.get('duration')?.errors?.['pattern'] && (movieForm.get('duration')?.dirty || movieForm.get('duration')?.touched)">
+            <span class="text-danger">Trajanje ne može imati decimalne vrijednosti</span>
+          </div>
+        </div>
+      <button *ngIf="creatingMovie == false" class="btn btn-success button-width center-block button-bottom-margin" type="button"
+                (click)="onAddEvent()">Dodaj projekciju
+        </button>
+        <div *ngIf="creatingMovie == false" formArrayName="events">
+          <div *ngFor="let eventCtrl of controls; let i = index" [formGroupName]="i" class="event-box position-relative">
+            <button class="btn btn-danger position-absolute" type="button" (click)="deleteEvent(i,eventCtrl.get('id')?.value)">X</button>
+            <div class="text-center">
+              <label>Datum početka:</label>
+              <input class="form-control input-width center-block" type="date" name="date" id="date"
+                     formControlName="date"/>
+              <div *ngIf="eventCtrl.get('date')?.errors?.['required'] && (eventCtrl.get('date')?.dirty || eventCtrl.get('date')?.touched)">
+                <span class="text-danger" >Datum je obavezan</span>
+              </div>
+              <hr/>
+              <label>Kino dvorana</label>
+              <select class="form-control input-width center-block" formControlName="idCinemaHall">
+                <option *ngFor="let cinemaHall of cinemaHalls" [value]="cinemaHall.id">{{cinemaHall.name}}</option>
+              </select>
+            <hr/>
+              <label>Sati početka:</label>
+              <select class="form-control input-width center-block" formControlName="startHour">
+                <option *ngFor="let hour of hours" value="{{hour}}">{{hour}}</option>
+              </select>
+              <div *ngIf="eventCtrl.get('startHour')?.errors?.['required'] && (eventCtrl.get('startHour')?.dirty || eventCtrl.get('startHour')?.touched)">
+                <span class="text-danger">Sati početka su obavezni</span>
+              </div>
+              <label>Minute početka:</label>
+              <select class="form-control input-width center-block" formControlName="startMinute">
+                <option *ngFor="let minute of minutes" value="{{minute}}">{{minute}}</option>
+              </select>
+              <div *ngIf="eventCtrl.get('startMinute')?.errors?.['required'] && (eventCtrl.get('startMinute')?.dirty || eventCtrl.get('startMinute')?.touched)">
+                <span class="text-danger">Minute početka su obavezne</span>
+              </div>
+            <hr/>
+            <hr/>
+              <label>Cijena:</label>
+              <input class="form-control input-width center-block" type='number' step='0.01' value='0.00'
+                     placeholder='0.00' name="price" id="price" formControlName="price"/>
+              <div *ngIf="eventCtrl.get('price')?.errors?.['required'] && (eventCtrl.get('price')?.dirty || eventCtrl.get('price')?.touched)">
+                <span class="text-danger">Cijena je obavezna</span>
+              </div>
+              <div class="text-danger" *ngIf="eventCtrl.get('price')?.errors?.['wrongNumber'] && (eventCtrl.get('price')?.dirty || eventCtrl.get('price')?.touched)">
+                <span class="text-danger">Cijena mora biti nula ili pozitivan broj</span>
+              </div>
+              <div class="text-danger" *ngIf="eventCtrl.get('price')?.errors?.['maxNumberPrice'] && (eventCtrl.get('price')?.dirty || eventCtrl.get('price')?.touched)">
+                <span class="text-danger">Cijena mora biti jednaka ili manja od 2147483647</span>
+              </div>
+              <div class="text-danger" *ngIf="eventCtrl.get('price')?.errors?.['pattern'] && (eventCtrl.get('price')?.dirty || eventCtrl.get('price')?.touched)">
+                <span class="text-danger">Cijena ne može imati više dva decimalna broja</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button *ngIf="creatingMovie == true" class="btn btn-orange btn-button-width center-block button-top-margin" type="button"
+                (click)="createMovie()" [disabled]="!movieForm.valid">Kreiraj film
+        </button>
+        <button *ngIf="creatingMovie == false && this.movieForm.value['events'].length > 0" class="btn btn-orange button-width center-block button-top-margin" type="submit"
+                [disabled]="!movieForm.valid">Završi kreiranje projekcija za film
+        </button>
+        <button *ngIf="creatingMovie == false && this.movieForm.value['events'].length == 0" class="btn btn-orange button-width center-block button-top-margin" routerLink="">
+          Odlazak na početnu stranicu
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

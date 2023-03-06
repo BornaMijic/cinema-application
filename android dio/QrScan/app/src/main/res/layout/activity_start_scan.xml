@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.StartScanActivity"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@color/grey"
+    >
+
+
+    <Button
+        android:id="@+id/scan"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Pokreni skeniranje"
+        android:gravity="center"
+        android:textColor="@color/light_white"
+        android:backgroundTint="@color/orange"
+        />
+
+    <ImageView
+        android:id="@+id/image_is_found"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        />
+
+    <TextView
+        android:id="@+id/row_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/light_white"
+        />
+
+    <TextView
+        android:id="@+id/seat_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/light_white"
+        />
+
+    <TextView
+        android:id="@+id/reservation_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/error"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/permission_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/error"
+        android:text="Da bi mogao koristiti skener moraš odobriti korištenje kamere"
+        android:gravity="center"/>
+
+</LinearLayout>

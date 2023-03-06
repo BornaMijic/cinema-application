@@ -1,0 +1,96 @@
+<div class="col-xs-12">
+  <div class="block-paddding">
+    <div class="alert alert-info">
+      <p class="text-center alert-info">Pripazite da nemate ostavljenog praznog prostora, ako imate pojavit će se validacijaska poruka. "Postoji znak ili znakovi koji nisu dozvoljeni u ..."</p>
+    </div>
+    <div *ngIf="errorMessage != ''" class="alert alert-danger">
+      <p class="text-center alert-danger">{{errorMessage}}</p>
+    </div>
+    <form #registration="ngForm" (ngSubmit)="onSubmit($event,registration)">
+      <div class="form-group">
+        <label>Korisničko ime</label>
+        <input class="form-control" type="text" name="username" minlength="6" maxlength="30" required ngModel pattern="^[a-zA-Z0-9]+$" #username="ngModel"/>
+        <span>
+          <p class="text-danger" *ngIf="username.errors?.['required'] && (username.touched || username.dirty)">Korisničko ime je obavezno</p>
+          <p class="text-danger" *ngIf="username.errors?.['minlength'] && (username.touched || username.dirty)">Korisničko ime mora imati minimalno 6 znakova</p>
+          <p class="text-danger" *ngIf="username.errors?.['pattern'] && (username.touched || username.dirty)"> Postoji znak ili znakovi koji nisu dozvoljeni u korisničkom imenu</p>
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label>Lozinka</label>
+        <input class="form-control" type="password" name="password" minlength="6"  required pattern="^[a-zA-Z0-9]+$" ngModel #password="ngModel"/>
+        <span>
+          <p class="text-danger" *ngIf="password.errors?.['required'] && (password.touched || password.dirty)">Lozinka je obavezna</p>
+          <p class="text-danger" *ngIf="password.errors?.['minlength'] && (password.touched || password.dirty)">Lozinka mora imati minimalno 6 znakova</p>
+          <p class="text-danger" *ngIf="password.errors?.['pattern'] && (password.touched || password.dirty)"> Postoji znak ili znakovi koji nisu dozvoljeni u lozinci</p>
+
+          <div *ngIf="password.value != null">
+             <p class="text-danger" *ngIf="password.value.length > 30 && (password.touched || password.dirty)">Lozinka mora imati jednako ili manje od 30 znakova</p>
+          </div>
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label>Ponovi lozinku</label>
+        <input class="form-control" type="password" name="confirmPassword" minlength="6" required pattern="^[a-zA-Z0-9]+$" ngModel #confirmPassword="ngModel"/>
+        <span>
+          <p class="text-danger" *ngIf="confirmPassword.errors?.['required'] && (confirmPassword.touched || confirmPassword.dirty)">Obavezno je ponoviti lozinku</p>
+          <p class="text-danger" *ngIf="confirmPassword.errors?.['minlength'] && (confirmPassword.touched || confirmPassword.dirty)">Ponovljena lozinka mora imati minimalno 6 znakova</p>
+                  <p class="text-danger" *ngIf="confirmPassword.errors?.['pattern'] && (confirmPassword.touched || confirmPassword.dirty)"> Postoji znak ili znakovi koji nisu dozvoljeni u ponovljenoj lozinci</p>
+          <div *ngIf="confirmPassword.value != null">
+              <p class="text-danger" *ngIf="confirmPassword.value.length > 30 && (confirmPassword.touched || confirmPassword.dirty)">Ponovljena lozinka mora imati jednako ili manje od 30 znakova</p>
+          </div>
+          <p class="text-danger" *ngIf="password.value != confirmPassword.value && (confirmPassword.touched || confirmPassword.dirty) && !(confirmPassword.errors?.['minlength'] || confirmPassword.errors?.['required'] || confirmPassword.errors?.['pattern'] || password.errors?.['minlength'] || password.errors?.['required'] || password.errors?.['pattern'])">Lozinka i ponovljena lozinka moraju biti iste</p>
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label>Ime</label>
+        <input class="form-control" type="type" name="name" maxlength="60" required pattern="^[a-zA-Z]+$" ngModel #name="ngModel"/>
+        <span>
+          <p class="text-danger" *ngIf="name.errors?.['required'] && (name.touched || name.dirty)">Ime je obavezno</p>
+          <p class="text-danger" *ngIf="name.errors?.['pattern'] && (name.touched || name.dirty)"> Postoji znak ili znakovi koji nisu dozvoljeni u imenu</p>
+        </span>
+
+      </div>
+
+      <div class="form-group">
+        <label>Prezime</label>
+        <input class="form-control" type="text" name="surname" maxlength="60" required pattern="^[a-zA-Z]+$" ngModel #surname="ngModel"/>
+        <span>
+          <p class="text-danger" *ngIf="surname.errors?.['required'] && (surname.touched || surname.dirty)">Prezime je obavezna</p>
+        </span>
+
+          <p class="text-danger" *ngIf="surname.errors?.['pattern'] && (surname.touched || surname.dirty)"> Postoji znak ili znakovi koji nisu dozvoljeni u prezimenu</p>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input class="form-control" type="email" name="email" required email pattern="[0-9a-z._]+@gmail.com$" maxlength="60" ngModel #email="ngModel"/>
+        <span>
+          <p class="text-danger" *ngIf="email.errors?.['required'] && (email.touched || email.dirty)"> Email je obavezan</p>
+          <p class="text-danger" *ngIf="email.errors?.['email'] && (email.touched || email.dirty)"> Ovo nije email</p>
+          <p class="text-danger" *ngIf="email.errors?.['pattern'] && (email.touched || email.dirty)"> Postoji znak ili znakovi koji nisu dozvoljeni u email-u</p>
+          <div *ngIf="email.value != null">
+            <p class="text-danger" *ngIf="!email.value.endsWith('@gmail.com') && (email.touched || email.dirty)"> Email mora biti gmail</p>
+            <p class="text-danger" *ngIf="email.value.startsWith(' ') && (email.touched || email.dirty)"> Email ne smije početi s praznim znakom</p>
+
+          </div>
+        </span>
+      </div>
+
+      <div class="form-group" *ngIf="password.value == null && confirmPassword.value == null && email.value == null && username.value == null && surname.value == null">
+        <button type="submit" class="btn btn-orange  width-block" [disabled]="true">Registriraj se</button>
+      </div>
+
+      <div class="form-group" *ngIf="password.value != null && confirmPassword.value != null && username.value != null">
+        <button type="submit" class="btn btn-orange width-block" [disabled]="!registration.valid || password.value != confirmPassword.value ||
+         password.value.length > 30 || confirmPassword.value.length > 30 ||
+         !email.value.endsWith('@gmail.com')">
+          Registriraj se
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

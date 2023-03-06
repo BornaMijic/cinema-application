@@ -1,0 +1,90 @@
+<div *ngIf="errorTemporaryReservation != '' && temporaryReservation != null" class="col-xs-12 alert alert-danger">
+    <p class="text-center padding-box text-danger">{{errorTemporaryReservation}}</p>
+</div>
+<div *ngIf="temporaryReservation != null" class="col-xs-12 text-center alert-warning padding-box">
+  <p class="text-center text-warning">Za navedenu projekciju ste već privremeno rezervirali sjedala </p>
+  <div class="text-center padding-button">
+    <button class="btn btn-orange" (click)="deleteTemporaryReservation()"> Odbaci privremeno rezervirana sjedala</button>
+  </div>
+  <div class="text-center padding-button">
+    <button class="btn btn-orange" (click)="goToPayment()"> Plati odabranu rezervaciju</button>
+  </div>
+</div>
+
+<div *ngIf="temporaryReservation == null">
+  <div class="col-xs-12 text-center">
+    <p>Broj sjedala: {{numberOfSeats}}</p>
+    <p>Broj rezerviranih sjedala: {{numberOfReservedSeats}}</p>
+    <p>Broj slobodnih sjedala: {{numberOfSeats - numberOfReservedSeats}}</p>
+  </div>
+
+  <div *ngIf="errorMessage != ''" class="alert alert-danger col-xs-12 ">
+    <p class="text-center padding-box text-danger">{{errorMessage}}</p>
+  </div>
+
+
+  <div  class="col-xs-12 col-md-2">
+    <p>Informacije o stolicama:</p>
+    <img class="seat-size-info" src="assets/icons/seat.png"/> <span>- Slobodno sjedalo</span>
+    <br/>
+    <img  class="seat-size-info" src="assets/icons/reserved1.png"/> <span>- Rezervirano sjedalo</span>
+    <br/>
+    <img  class="seat-size-info seat-selected" src="assets/icons/seat.png"/> <span>- Odabrano sjedalo</span>
+  </div>
+
+  <div class="col-xs-12 col-md-10 margin-top" *ngIf="cinemaHall != null">
+    <hr/>
+    <div *ngIf="error" class="text-center alert alert-danger">
+      <p class="text-danger">{{error}}</p>
+    </div>
+    <div class="text-center scroll-box" >
+      <div>
+        <button *ngIf="currentReservationSeats.length > 0" class="btn btn-orange margin-bottom" (click)="clearCurrentReservation()">Izbriši trenutni odabir sjedala</button>
+        <div class="no-new-line">
+        <span style="margin: 0 auto;"*ngFor="let seat of seats; let i = index">
+          <img *ngIf="seat.reserved == false && seat.seatNumber != null && checkForSelected(seat) == false" class="seat-size" src="assets/icons/seat.png"  (click)="selectForReservation(seat)"/>
+        <img *ngIf="seat.reserved == true && seat.seatNumber != null" class="seat-size" src="assets/icons/reserved1.png"/>
+
+        <img *ngIf="checkForSelected(seat) == true && seat.seatNumber != null" class="seat-size seat-selected" src="assets/icons/seat.png" (click)="removeFromReservation(seat)"/>
+        <img *ngIf="seat.seatNumber == null" class="seat-size no-seat" src="assets/icons/empty.png"/>
+          <br *ngIf="seat.gridPosition % cinemaHall.gridColumnsNumber == 0"/>
+
+      </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-xs-12 margin-top"  *ngIf="currentReservationSeats.length > 0 && movie != null && event != null">
+    <div class="price-box text-center">
+      <h4>Naslov: {{movie.title}} </h4>
+      <p>Datum početka: {{event.date | datePipe:DATE_FORMAT}}</p>
+      <p>Vrijeme početka: {{event.date | datePipe: HOUR_FORMAT}}</p>
+      <p>Dvorana: {{cinemaHall!.name}}</p>
+      <hr/>
+      <div>
+        <h4>Tvoj odabir:</h4>
+        <p *ngFor="let reservation of getSortCurrentReservation()">Seat: {{reservation.seatNumber}} - Row:{{reservation.rowNumber}}</p>
+      </div>
+      <hr/>
+      <table class="table-width">
+        <tr>
+          <td>Broj karta</td>
+          <td>Cijena karte</td>
+          <td>Ukupna cijena</td>
+        </tr>
+        <tr>
+          <td>{{event.price | currency: 'EUR':'symbol':'.2-2':'it'}}</td>
+          <td>{{currentReservationSeats.length}}</td>
+          <td>{{currentReservationSeats.length * event.price | currency: 'EUR':'symbol':'.2-2':'it'}}</td>
+        </tr>
+      </table>
+      <hr/>
+      <button class="btn-lg btn-orange btn-group-justified" (click)="reserveSeats()">
+        NASTAVI PROCES REZEREVACIJE
+      </button>
+    </div>
+  </div>
+</div>
+
+

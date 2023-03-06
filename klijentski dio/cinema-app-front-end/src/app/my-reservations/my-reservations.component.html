@@ -1,0 +1,43 @@
+<div class="row" *ngIf="loadDataError">
+  <div class="col-xs-12 text-padding text-center alert alert-info">
+    <p class="text-info">Podatci se nisu mogli očitat</p>
+  </div>
+</div>
+<div class="row" *ngIf="error">
+  <div class="col-xs-12 text-padding text-center alert alert-danger">
+    <p class="text-danger">{{error}}</p>
+  </div>
+</div>
+<div class="row" *ngIf="!events && !movies && !reservations">
+  <div class="col-xs-12 text-padding text-center">
+    <p>Nema rezervacija</p>
+  </div>
+</div>
+<div *ngIf="events && movies && reservations && !loadDataError" class="margin-bottom">
+  <div *ngFor="let reservationInfo of reservationSortedByEvent| paginate: {itemsPerPage: 5, currentPage: pageNumber, totalItems: amountOfReservations}" class="row">
+    <hr/>
+    <div class="col-xs-12">
+      <h4 class="text-center">{{reservationInfo.movie.title}}</h4>
+    </div>
+    <hr/>
+    <div class="col-xs-12">
+      <p class="text-center">Kino dvorana: {{reservationInfo.cinemaHall.name}}</p>
+      <p class="text-center">{{reservationInfo.event.date | datePipe: DATE_FORMAT}}</p>
+      <p class="text-center">{{reservationInfo.event.date | datePipe: HOUR_FORMAT}}</p>
+      <hr/>
+      <div class="col-12 padding-block">
+        <button class="btn btn-primary center-block" (click)="downloadTickets(reservationInfo.reservationSeats, reservationInfo.event, reservationInfo.movie.title, reservationInfo.cinemaHall.name)">Preuzmi karte</button>
+      </div>
+    </div>
+    <hr/>
+  </div>
+</div>
+<div class="row" *ngIf="events && movies && reservations">
+  <div class="col-xs-12">
+    <pagination-controls class="text-center"
+                         previousLabel=""
+                         nextLabel=""
+                         (pageChange)="onPageChange(pageNumber = $event)">
+    </pagination-controls>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<div class="row">
+  <div *ngIf="errorTemporaryReservation != '' && temporaryReservationsInfo!= null" class="col-xs-12 alert alert-danger">
+    <p class="text-center padding-box text-danger">{{errorTemporaryReservation}}</p>
+  </div>
+  <div class="col-xs-12">
+    <table class="table table-bordered table-responsive" *ngIf="temporaryReservationsInfo != null">
+      <thead>
+        <tr>
+          <th>Film</th>
+          <th>Počinje</th>
+          <th>Trajanje</th>
+          <th>Seats</th>
+          <th>Cijena karte</th>
+          <th>Broj karata</th>
+          <th>Ukupno</th>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr *ngIf="temporaryReservationsInfo.length == 0">
+        <th class="text-center" colspan="6"> Nema karte u procesu rezervacije</th>
+      </tr>
+      <tr *ngFor="let temporaryReservationInfo of temporaryReservationsInfo!!">
+        <td>
+          {{temporaryReservationInfo.movie.title}}
+        </td>
+        <td>
+          {{temporaryReservationInfo.event.date | datePipe: DATE_HOUR_FORMAT}}
+        </td>
+        <td>
+          {{temporaryReservationInfo.movie.duration}} <span *ngIf="temporaryReservationInfo.movie.duration == 1"> minuta</span> <span *ngIf="temporaryReservationInfo.movie.duration > 1"> minute</span>
+        </td>
+        <td>
+          <p *ngFor="let reservationSeat of temporaryReservationInfo.reservationSeats">
+            Broj reda: {{reservationSeat.rowNumber}} - Broj sjedala: {{reservationSeat.seatNumber}}
+          </p>
+        </td>
+        <td>
+          {{temporaryReservationInfo.event.price}} €
+        </td>
+        <td>
+          {{temporaryReservationInfo.reservationSeats.length}}
+        </td>
+        <td>
+          {{temporaryReservationInfo.event.price * temporaryReservationInfo.reservationSeats.length}} €
+        </td>
+        <td><button class="btn btn-orange" (click)="goToPayment(temporaryReservationInfo)" >Plati</button></td>
+        <td><button class="btn btn-danger" (click)="deleteTemporaryReservation(temporaryReservationInfo.idReservation)">X</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

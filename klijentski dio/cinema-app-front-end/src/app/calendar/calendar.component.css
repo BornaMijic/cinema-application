@@ -1,0 +1,29 @@
+.movie-padding{
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.float-left{
+  float:left;
+}
+
+.float-clear{
+  clear: both;
+}
+
+.row-padding {
+  padding: 20px;
+}
+
+.margin-top {
+  margin-top: 30px;
+}
+
+.movie-active:hover {
+  background-color: rgb(145, 99, 34);
+}
+
+.calendar-background {
+  background-color: #1e1e1e;
+}
+

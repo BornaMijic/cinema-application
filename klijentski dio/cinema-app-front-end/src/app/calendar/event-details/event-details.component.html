@@ -1,0 +1,29 @@
+<div class="row" *ngIf="event != null && movie != null && cinemaHall != null">
+  <div class="col-xs-12 col-md-5">
+    <div class="pull-left center-block">
+      <div *ngIf="movie.imageType != 'undefined' && movie.image">
+        <img class="img-responsive img-height-calendar center-block" src="data:image/{{movie.imageType}};base64,{{movie.image}}" alt="Nedostupna slika"/>
+      </div>
+      <div *ngIf="!movie.imageType || !movie.image">
+        <img class="img-responsive img-height-calendar center-block" alt="Nedostupna slika"/>
+      </div>
+    </div>
+    </div>
+  <div class="col-xs-12 col-md-7">
+  <div class="pull-left">
+      <h3>{{movie.title}}</h3>
+      <hr>
+      <p>Sažetak:</p>
+      <p>{{movie.summary}}</p>
+      <p>Dvorana: {{cinemaHall.name}}</p>
+      <p>Datum početka: {{event.date | datePipe:DATE_FORMAT }}</p>
+      <p>Sati početka: {{event.date | datePipe: HOUR_FORMAT}}</p>
+    <p> Trajanje: {{movie.duration}} <span *ngIf="movie.duration <= 1">minuta</span> <span *ngIf="movie.duration > 1">minute</span> </p>
+    <p>Cijena: {{event.price| currency: 'EUR':'symbol':'.2-2':'it' }}</p>
+    </div>
+  </div>
+</div>
+<hr/>
+<div class="row" *ngIf="event != null && movie != null && cinemaHall != null">
+  <app-reservation [event]=event [movie]=movie [cinemaHall]=cinemaHall></app-reservation>
+</div>

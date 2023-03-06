@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-12">
+    <div *ngIf="loading == true" class="block-paddding text-center">
+      <p>Očitavanje...</p>
+    </div>
+    <div *ngIf="loading == false && verificationSuccessful == false">
+      <div *ngIf="errorMessage.length > 0" class="alert alert-danger text-center padding-top-bottom margin-top">
+        <p class="text-danger">{{errorMessage}}</p>
+      </div>
+      <div *ngIf="alreadyVerifiedMessage.length > 0" class="alert alert-info text-center padding-top-bottom margin-top">
+        <p class="text-success">{{alreadyVerifiedMessage}}</p>
+      </div>
+    </div>
+    <div *ngIf="loading == false && verificationSuccessful == true">
+      <div  class="alert alert-success text-center padding-top-bottom margin-top">
+        <p class="text-success">{{succesMessage}}</p>
+      </div>
+    </div>
+  </div>
+</div>

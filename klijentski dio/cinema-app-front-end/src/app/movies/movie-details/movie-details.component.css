@@ -1,0 +1,50 @@
+.summary-border{
+  border: 1px #e8e8e8 solid;
+  border-radius: 25px;
+  background-color: rgb(145, 99, 34);
+  padding: 25px;
+}
+
+.img-size {
+  max-height: 400px;
+  max-width: 50%;
+}
+
+.event-box{
+  border: 1px #e8e8e8 solid;
+  border-radius: 25px;
+  background-color: rgb(145, 99, 34);
+  width:50%;
+  padding: 25px;
+  margin-top: 10px;
+}
+
+.event-box:hover{
+  background-color: rgb(190, 122, 22);
+}
+
+.margin-bottom{
+  margin-bottom: 20px;
+}
+
+.margin-top{
+  margin-top: 20px;
+}
+
+.text-size-no-events {
+  font-size: 16px;
+}
+
+.event-box2{
+  border: 1px #e8e8e8 solid;
+  border-radius: 25px;
+  background-color: rgb(145, 99, 34);
+  width:50%;
+  padding: 25px;
+  margin-top: 10px;
+}
+
+.button-width {
+  width: 100%;
+}
+

@@ -1,0 +1,66 @@
+<div *ngIf="errorMessage != '' && createCinemaHall==false" class="alert alert-danger">
+  <p class="text-center text-danger">{{errorMessage}}</p>
+</div>
+
+<div class="row">
+  <div *ngIf="createCinemaHall==false" class="col-xs-12">
+      <div class="form-group text-center">
+        <label>Redova</label>
+        <input class="form-control input-width center-block" type="number" #rows>
+      </div>
+      <div class="form-group text-center">
+        <label>Kolona</label>
+        <input class="form-control input-width center-block" type="number" #columns>
+      </div>
+      <button class="btn btn-orange center-block" (click)="generateCinemaHall(+rows.value,+columns.value)">Generiranje kino dvorane</button>
+  </div>
+  <hr/>
+
+  <div *ngIf="loading == false && createCinemaHall == true"  class="col-xs-12 margin-top">
+    <div class="alert alert-info">
+      <p class="text-center text-info"> Ukoliko ne vidite grid sustav onda se još generira...</p>
+    </div>
+
+    <div *ngIf="errorMessage.length > 0" class="alert alert-danger">
+      <p class="text-center text-danger">{{errorMessage}}</p>
+    </div>
+    <button class="btn btn-orange center-block" (click)="deleteCinemaHall()">Odbaci kino dvoranu</button>
+      <form #cinemaHallForm="ngForm" (ngSubmit)="onSubmit(cinemaHallName.value)">
+        <div class="form-group text-center">
+          <label>Naziv kino dvorane</label>
+          <input class="form-control input-width center-block" type="text" required name="cinemaHallName" ngModel #cinemaHallName="ngModel">
+        </div>
+        <div class="text-center scroll-box" >
+        <span
+          class="text-danger"
+          *ngIf="cinemaHallName.errors?.['required'] && (cinemaHallName.touched || cinemaHallName.dirty)"
+        >Naziv kino dvorana je obavezna</span>
+          <div *ngIf="cinemaHallName.value">
+                   <span
+                     class="text-danger"
+                     *ngIf="cinemaHallName.value.length > 40 && (cinemaHallName.touched || cinemaHallName.dirty)"
+                   >Naziv kino dvorana mora imat jednako ili manje od 40 znakova</span>
+          </div>
+          <div  class="no-new-line">
+
+        <span style="margin: 0 auto;"*ngFor="let seat of seats; let i = index">
+
+          <img *ngIf="seat.exist == false" class="seat-size" src="../../../assets/icons/reserved.png" (click)="addSeat(seat)"/>
+          <img *ngIf="seat.exist == true" class="seat-size" src="../../../assets/icons/seat.png" (click)="removeSeat(seat)"/>
+
+
+          <br *ngIf="seat.gridPosition % gridColumnsNumber == 0"/>
+          </span>
+          </div>
+
+        </div>
+        <div *ngIf="cinemaHallName.value">
+          <button class="btn btn-orange center-block margin-top" type="submit" [disabled]="!cinemaHallForm.valid || cinemaHallName.value.length > 40"> Kreiranje kino dvorane</button>
+        </div>
+        <div *ngIf="!cinemaHallName.value">
+          <button  class="btn btn-orange center-block margin-top" type="submit" [disabled]="!cinemaHallForm.valid"> Kreiranje kino dvorane</button>
+        </div>
+      </form>
+
+  </div>
+</div>

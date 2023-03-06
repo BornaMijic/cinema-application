@@ -1,0 +1,56 @@
+
+.absolute-position{
+  position: absolute;
+  top:4px;
+  padding:5px;
+  right:2px;
+}
+
+.margin-top{
+  margin-top: 40px;
+}
+
+.sub-menu {
+  display: none;
+}
+
+.menu-icon-size{
+  width: 40px;
+}
+
+.navigation-background-color {
+  background-color: rgb(145, 99, 34);
+}
+
+a {
+  color: #f1f1f1;
+}
+
+.nav > li:hover > a{
+  background-color: rgb(190, 122, 22);
+}
+
+.nav > li > a:focus{
+  background-color: rgb(190, 122, 22);
+}
+
+
+.dropdown-menu {
+  background-color: rgb(145, 99, 34);
+}
+
+.nav > li > .dropdown-menu > li > a:hover {
+  background-color: rgb(190, 122, 22);
+}
+
+.nav > li >  ul > li > a {
+  color: #f1f1f1;
+}
+
+
+.nav > li > .menu-link{
+  background-color: rgb(145, 99, 34);
+}
+
+
+

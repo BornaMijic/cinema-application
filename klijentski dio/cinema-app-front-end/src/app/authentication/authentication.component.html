@@ -1,0 +1,79 @@
+<div *ngIf="loading == true" class="col-12 margin-top text-center">
+  <p>Očitavanje...</p>
+</div>
+<div class="col-xs-12" *ngIf="userVerified == true">
+  <div *ngIf="loading == false" class="block-padding">
+    <div *ngIf="errorMessage != ''" class="alert alert-danger">
+      <p class="text-center text-danger">{{errorMessage}}</p>
+    </div>
+    <form #login="ngForm" (ngSubmit)="onSubmit($event,login)">
+      <div class="form-group">
+        <label>Korisničko ime</label>
+        <input class="form-control" type="text" name="username" minlength="6" required ngModel #username="ngModel"/>
+      </div>
+
+      <div class="form-group">
+        <label>Lozinka</label>
+        <input class="form-control" type="password" name="password" minlength="6" required ngModel #password="ngModel"/>
+      </div>
+      <div class="form-group">
+        <button [disabled]="!login.valid" type="submit" class="btn btn-orange width-block">Prijavi se</button>
+        <hr/>
+        <button routerLink="/register" class="btn btn-orange width-block">Registracija</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="userVerified == false" class="row bg-info padding-block2">
+  <div *ngIf="loading == false" class="block-padding2">
+    <div class="col-12">
+      <div *ngIf="errorMessageChangeEmail.length > 0"
+           class="alert alert-danger email-send-width center-block text-center">
+        <p class="text-danger">{{errorMessageChangeEmail}}</p>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="loading == false">
+    <div *ngIf="sendEmail == true" class="col-12">
+      <p class="text-center text-info">Poslali smo verifikacijski link na navedi email. Molimo vas da pogledate email. <br/> Ponovno slanje će biti moguće za 15 sekundi</p>
+    </div>
+  </div>
+  <div *ngIf="loading == false && sendEmail == false" class="block-padding2">
+    <form #changeToNewEmail="ngForm">
+
+    <div *ngIf="changeEmail == true" class="col-12">
+        <input type="text" class="form-control email-send-width center-block margin-top" placeholder="example@gmail.com"
+                name="email" #email="ngModel"  required ngModel email pattern="[0-9a-z._]+@gmail.com$"/>
+      <span class="text-center">
+          <p class="text-danger" *ngIf="email.errors?.['required'] && (email.touched || email.dirty)"> Email je obavezan</p>
+          <p class="text-danger" *ngIf="email.errors?.['email'] && (email.touched || email.dirty)"> Ovo nije e-mail</p>
+          <p class="text-danger" *ngIf="email.errors?.['pattern'] && (email.touched || email.dirty)"> Ilegalni znakovi u e-mailu</p>
+          <div *ngIf="email.value != null">
+            <p class="text-danger" *ngIf="!email.value.endsWith('@gmail.com') && (email.touched || email.dirty)"> Email mora biti gmail</p>
+          </div>
+        </span>
+      <button *ngIf="changeEmail == true" class="btn btn-orange center-block margin-top margin-bottom"
+              (click)="sendMeVerificationCode(email.value)" [disabled]="sendEmail || !changeToNewEmail.valid">Pošalji verifikacijski link
+      </button>
+    </div>
+      <div class="col-4">
+        <button *ngIf="changeEmail == false" class="btn btn-orange center-block margin-top margin-bottom"
+                (click)="sendMeVerificationCode()">Pošalji verifikacijski link
+        </button>
+
+      </div>
+      <div *ngIf="changeEmail == false" class="col-4">
+        <button class="btn btn-orange center-block margin-top" (click)="changeEmail = true">Promjeni email</button>
+      </div>
+    <div (click)="goBack()">
+      <button class="btn btn-orange center-block margin-top" (click)="changeEmail = true">Natrag na logiranje</button>
+    </div>
+    <div *ngIf="changeEmail == true" class="col-4">
+      <button class="btn btn-orange center-block margin-top" (click)="changeEmail = false">Natrag</button>
+    </div>
+
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,9 @@
+.block-paddding{
+  padding: 10% 20% 20% 20%
+}
+
+.width-block {
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+}

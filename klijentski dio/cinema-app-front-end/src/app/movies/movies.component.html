@@ -1,0 +1,76 @@
+<div *ngIf="errorMessage != ''" class="alert alert-danger">
+  <p class="text-center text-danger">{{errorMessage}}</p>
+</div>
+<div *ngIf="isAdministration"  class="text-center">
+  <button class="btn btn-orange button-width button-bottom-margin" [routerLink]="['new']">Dodaj novi film</button>
+</div>
+
+<div class="text-center">
+  <label> Pretraživanje naslova filma </label>
+  <input class="element-width form-control center-block" type="text" placeholder="Pretraživanje naslova" [(ngModel)]="search">
+  <button class="btn btn-orange element-width button-top-margin" (click)="searchMovies()">Pretraži</button>
+</div>
+
+<div *ngIf="amountOfMovies > 0" class="margin-top">
+  <div *ngIf="innerWidth < 992">
+    <div class="col-xs-12">
+      <div class="movie-box" [ngClass]="{'movie-box-selected' : movie.id == currentSelectedMovie.id}" *ngFor="let movie of movies| paginate :{itemsPerPage: 5, currentPage: pageNumber, totalItems: amountOfMovies}" (click)="navigateToMovieDetails(movie.id, movie.title)" >
+        <div *ngIf="movie.imageType && movie.image">
+          <img class="img-responsive img-height-calendar center-block" src="data:image/{{movie.imageType}};base64,{{movie.image}}" alt="Nedostupna slika"/>
+        </div>
+        <div *ngIf="!movie.imageType || !movie.image">
+          <img class="img-responsive img-height-calendar center-block" src="" alt="Nedostupna slika"/>
+        </div>
+        <p class="text-center">{{movie.title}}</p>
+        <hr *ngIf="isAdministration" />
+        <div *ngIf="isAdministration" class="text-center">
+          <button class="btn btn-warning btn-margin-right" (click)="startEditing(movie.id)">AŽURIRAJ FILM</button>
+          <button class="btn btn-danger btn-margin-left" (click)="deleteMovie($event, movie.id, movie.title)">IZBRIŠI FILM</button>
+        </div>
+        <hr/>
+      </div>
+      <div class="text-center">
+        <pagination-controls
+        previousLabel=""
+        nextLabel=""
+        (pageChange)="onPageChange($event)"
+        >
+        </pagination-controls>
+      </div>
+    </div>
+  </div>
+
+  <div  *ngIf="innerWidth >= 992"  class="row page-margin-bottom">
+    <div class="col-xs-4">
+      <div class="movie-box" [ngClass]="{'movie-box-selected' : movie.id == currentSelectedMovie.id}" *ngFor="let movie of movies| paginate :{itemsPerPage: 5, currentPage: pageNumber, totalItems: amountOfMovies}" (click)="selectedMovie(movie)">
+        <div *ngIf="movie.imageType && movie.image">
+          <img class="img-responsive img-height-calendar center-block" src="data:image/{{movie.imageType}};base64,{{movie.image}}" alt="Nedostupna slika"/>
+        </div>
+        <div *ngIf="!movie.imageType || !movie.image">
+          <img class="img-responsive img-height-calendar center-block" src="" alt="Nedostupna slika"/>
+        </div>        <p class="text-center">{{movie.title}}</p>
+        <hr *ngIf="isAdministration" />
+        <div *ngIf="isAdministration" class="text-center">
+          <button class="btn btn-warning btn-margin-right" (click)="startEditing(movie.id)">AŽURIRANJE FILMA</button>
+          <button class="btn btn-danger btn-margin-left" (click)="deleteMovie($event, movie.id, movie.title, movie.imageName)">IZBRIŠI FILM</button>
+        </div>
+        <hr/>
+      </div>
+      <div class="text-center">
+        <pagination-controls
+          previousLabel=""
+          nextLabel=""
+          (pageChange)="onPageChange($event)"
+        >
+        </pagination-controls>
+      </div>
+    </div>
+    <div class="col-xs-8">
+      <app-movie-details [selectedMovie]="currentSelectedMovie" [isAdministration]="isAdministration" [moviesSize]="movies.length"></app-movie-details>
+    </div>
+  </div>
+</div>
+<div class="margin-top" *ngIf="movies && movies.length == 0">
+  <p class="text-danger text-center margin-bottom text-size-no-more"> Nema filmova</p>
+</div>
+

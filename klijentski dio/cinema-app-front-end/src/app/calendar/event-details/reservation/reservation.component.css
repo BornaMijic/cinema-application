@@ -1,0 +1,66 @@
+
+.seat-size{
+  max-width: 45px;
+}
+
+.no-new-line {
+  white-space: nowrap;
+}
+
+.seat-size-info{
+  width: 35px;
+}
+
+.no-seat{
+  background: blue;
+}
+
+.seat-selected{
+  background: #838383;
+}
+
+.price-box {
+  border: 1px solid grey;
+  padding:20px 20px 40px 20px;
+  margin-bottom: 20px;
+}
+
+.scroll-box{
+  overflow-x: scroll;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+
+.padding-box{
+  padding: 15px 0px;
+}
+
+.margin-top{
+  margin-top: 20px;
+}
+
+.margin-bottom {
+  margin-bottom: 20px;
+}
+
+.table-width {
+  width: 100%;
+}
+.padding-button {
+  padding: 10px 0px;
+}
+
+@media (max-width: 991px) {
+
+  .seat-size{
+    max-width: 35px;
+  }
+
+  .seat-size-info{
+    width: 25px;
+  }
+
+}
+
+

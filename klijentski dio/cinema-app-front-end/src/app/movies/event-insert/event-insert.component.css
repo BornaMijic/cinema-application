@@ -1,0 +1,27 @@
+.event-box{
+  border-radius: 25px;
+  border: 1px solid #eaeaea;
+  padding: 5%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.button-width{
+  width: 80%;
+}
+
+.button-top-margin{
+  margin-top: 10px;
+}
+
+.input-width{
+  width: 25vw;
+}
+
+.block-paddding{
+  padding: 30% 20% 20% 30%
+}
+
+
+
+

@@ -1,0 +1,84 @@
+/* You can add global styles to this file, and also import other style files */
+.movie-poster {
+  min-height: 30px;
+}
+
+
+*{
+  word-break: break-word;
+}
+
+h1,h2,h3,h4,h5,h4,a, th{
+  font-family: "Fira Code Medium";
+}
+
+p, span, tr, li, button{
+  font-family: "Source Sans Pro";
+}
+
+
+.img-height-calendar{
+  height: 270px;
+  width: 180px;
+}
+
+@media (max-width: 991px) {
+  .img-height-calendar{
+    height: 210px;
+    width: 140px;
+  }
+}
+
+.time-period-size{
+  font-size: 16px;
+}
+
+*:not(option) {
+  color: #f1f1f1;
+}
+
+body {
+  background-color: #1e1e1e;
+}
+
+.btn-orange {
+  background-color: rgb(145, 99, 34);
+}
+
+.btn-orange:hover {
+  background-color: rgb(190, 122, 22);
+  color: #f1f1f1;
+}
+
+.ngx-pagination .current, .btn-info {
+  background-color: rgb(190, 122, 22) !important;
+  border-radius: 7px;
+}
+
+.ngx-pagination a:hover {
+  background-color: rgb(145, 99, 34) !important;
+  border-radius: 7px;
+}
+
+.pagination-previous:not(.disabled) {
+  background-color: rgb(145, 99, 34) !important;
+}
+
+.pagination-next:not(.disabled){
+  background-color: rgb(145, 99, 34) !important;
+}
+
+.pagination-previous.disabled {
+  color: rgb(145, 99, 34) !important;
+  border-radius: 20px !important;
+}
+
+.pagination-next.disabled {
+  color: rgb(145, 99, 34) !important;
+  border-radius: 20px !important;
+}
+
+
+
+
+

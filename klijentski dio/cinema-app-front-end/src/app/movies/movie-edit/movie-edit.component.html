@@ -1,0 +1,58 @@
+<div class="row">
+  <div *ngIf="loading == true" class="block-paddding text-center">
+    <p>Očitavanje...</p>
+  </div>
+  <div *ngIf="loading == false">
+    <div *ngIf="errorMessage != ''" class="alert alert-danger">
+      <p class="text-center text-danger">{{errorMessage}}</p>
+    </div>
+    <div class="col-xs-12 form-box">
+      <form [formGroup]="movieForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+          <div class="form-group">
+            <label>Naslov</label>
+            <input class="form-control" type="text" name="title" id="title" formControlName="title" placeholder="Movie title"/>
+            <div *ngIf="movieForm.get('title')?.errors?.['required'] && (movieForm.get('title')?.dirty || movieForm.get('title')?.touched)">
+              <span class="text-danger">Naslov je obavezan</span>
+            </div>
+            <div *ngIf="movieForm.get('title')?.errors?.['maxlength'] && (movieForm.get('title')?.dirty || movieForm.get('title')?.touched)">
+              <span class="text-danger">Naslov mora imat jednako ili manje 100 znakova</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Poster filma</label>
+            <input type="file" accept="image/jpeg, image/png" name="posterFile" id="posterFile" formControlName="posterFile" (change)="selectImage($event)">
+          </div>
+          <div class="form-group">
+            <label>Sažetak</label>
+            <textarea class="form-control" rows="25" name="summary" id="summary" formControlName="summary" placeholder="Movie summary"></textarea>
+            <div *ngIf="movieForm.get('summary')?.errors?.['required'] && (movieForm.get('summary')?.dirty || movieForm.get('summary')?.touched)">
+              <span class="text-danger">Sažetak je obavezan</span>
+            </div>
+            <div *ngIf="movieForm.get('summary')?.errors?.['maxlength'] && (movieForm.get('summary')?.dirty || movieForm.get('summary')?.touched)">
+              <span class="text-danger">Sažetak mora imat jednako ili manje 3000 znakova</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Trajanje filma u minutama</label>
+            <input class="form-control" type="number" name="duration" id="duration" formControlName="duration" placeholder="Minutes"/>
+            <div *ngIf="movieForm.get('duration')?.errors?.['required'] && (movieForm.get('duration')?.dirty || movieForm.get('duration')?.touched)">
+              <span class="text-danger" >Trajanje je obavezno</span>
+            </div>
+            <div class="text-danger" *ngIf="movieForm.get('duration')?.errors?.['wrongNumber'] && (movieForm.get('duration')?.dirty || movieForm.get('duration')?.touched)">
+              <span class="text-danger">Trajanje mora biti nula ili pozitivan broj</span>
+            </div>
+            <div class="text-danger" *ngIf="movieForm.get('duration')?.errors?.['maxNumberDuration'] && (movieForm.get('duration')?.dirty || movieForm.get('duration')?.touched)">
+              <span class="text-danger">Trajanje mora biti jednako ili manje od 10000</span>
+            </div>
+            <div class="text-danger" *ngIf="movieForm.get('duration')?.errors?.['pattern'] && (movieForm.get('duration')?.dirty || movieForm.get('duration')?.touched)">
+              <span class="text-danger">Trajanje ne može imati decimalne vrijednosti</span>
+            </div>
+        </div>
+        <button class="btn btn-orange button-width center-block button-top-margin" type="submit"
+                [disabled]="!movieForm.valid">Ažuriraj
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

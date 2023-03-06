@@ -1,0 +1,63 @@
+
+<div *ngIf="selectedMovie.id == '' && loadingPage == true && loadingMovieMessage.length <= 0 && moviesSize > 0" class="margin-top">
+  <div class="alert alert-info">
+    <p class="text-center alert-info">Odabir filma</p>
+  </div>
+</div>
+
+<div *ngIf="loadingMovieMessage.length > 0 && loadingPage == true" class="margin-top">
+  <div class="alert alert-info">
+    <p class="text-center alert-info">{{loadingMovieMessage}}</p>
+  </div>
+</div>
+
+<div *ngIf="errorDeletingEvent.length > 0 && selectedMovie.id != '' && loadingPage == true && loadingMovieMessage.length <= 0" class="alert alert-danger">
+  <p class="alert-danger text-center" >{{errorDeletingEvent}}</p>
+</div>
+
+<div *ngIf="selectedMovie.id != '' && loadingPage == true && loadingMovieMessage.length <= 0" class="position-relative margin-bottom">
+  <hr/>
+  <h4 class="text-center">{{selectedMovie.title}}</h4>
+  <hr/>
+  <div *ngIf="selectedMovie.imageType && selectedMovie.image">
+    <img class="img-responsive img-height-calendar center-block" src="data:image/{{selectedMovie.imageType}};base64,{{selectedMovie.image}}" alt="Nedostupna slika"/>
+  </div>
+  <div *ngIf="!selectedMovie.imageType ||  !selectedMovie.image">
+    <img class="img-responsive img-height-calendar center-block" alt="Nedostupna slika"/>
+  </div>
+  <hr/>
+  <div class="summary-border">
+    <p class="text-center">Sažetak<p>
+    <p class="text-center">{{selectedMovie.summary}}</p>
+    <hr/>
+    <div class="text-center">
+      <p> Trajanje: </p>
+      <p>{{selectedMovie.duration}} <span *ngIf="selectedMovie.duration <= 1">minuta</span> <span *ngIf="selectedMovie.duration > 1">minute</span></p>
+    </div>
+  </div>
+  <hr/>
+  <div>
+    <button *ngIf="isAdministration == true" class="btn btn-orange button-width" [routerLink]="['/administration/movies/event/new/', selectedMovie.id]">Dodaj novu projekciju</button>
+    <h4 class="text-center">Projekcije</h4>
+    <div *ngFor="let event of events">
+      <div *ngIf="event && isAdministration == false" class="text-center event-box center-block" [routerLink]="['/movies/reservations', selectedMovie.title , event.id]">
+        <p>Datum početka: {{event.date | datePipe:DATE_FORMAT }} </p>
+        <p>Vrijeme početka: {{event.date | datePipe:HOUR_FORMAT}}</p>
+        <p>Kino dvorana: {{event.cinemaHallName}}</p>
+        <p>Cijena: {{event.price | currency: 'EUR':'symbol':'.2-2':'it'}}</p>
+      </div>
+    <div *ngIf="event && isAdministration == true" class="text-center event-box2 center-block">
+      <p>Datum početka: {{event.date | datePipe:DATE_FORMAT }} </p>
+      <p>Vrijeme početka: {{event.date | datePipe:HOUR_FORMAT}}</p>
+      <p>Kino dvorana: {{event.cinemaHallName}}</p>
+      <p>Cijena: {{event.price | currency: 'EUR':'symbol':'.2-2':'it'}} </p>
+      <button *ngIf="isAdministration" class="btn btn-warning button-width" [routerLink]="['/administration/movies/event/edit/', event.id]">AŽURIRAJ</button>
+      <button *ngIf="isAdministration" class="btn btn-warning button-width" [routerLink]="['/administration/movies/reservations', selectedMovie.title ,selectedMovie.id,  event.id]">UPRAVLJANJE REZERVACIJAMA</button>
+      <button *ngIf="isAdministration" class="btn btn-danger button-width" (click)="deleteEvent($event, event.id)">IZBRIŠI</button>
+    </div>
+    </div>
+    <div *ngIf="events.length == 0">
+      <p class="text-danger text-center margin-bottom text-size-no-events"> Ne postoje projekcije za ovaj film</p>
+    </div>
+  </div>
+</div>

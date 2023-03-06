@@ -1,0 +1,95 @@
+<div>
+  <div class="row">
+    <div class="col-md-4">
+      <h3 class="text-center">{{movie.title}}</h3>
+      <img class="img-responsive img-max-height center-block" src="data:image/{{movie.imageType}};base64,{{movie.image}}" alt="Nedostupna slika"/>
+    </div>
+    <div class="col-md-8 margin-top">
+      <h4>Sažetak</h4>
+      <hr/>
+      <p>{{movie.summary}}</p>
+      <hr/>
+      <p>Datum početka: {{ev.date | datePipe:DATE_FORMAT}}</p>
+      <p>Vrijeme početka: {{ev.date | datePipe:HOUR_FORMAT}}</p>
+      <p>Trajanje: {{movie.duration}} minutes</p>
+      <p *ngIf="cinemaHall">Dvorana: {{cinemaHall!.name}}</p>
+      <p>Cijena: {{ev.price | currency: 'EUR':'symbol':'.2-2':'it'}}</p>
+    </div>
+  </div>
+  <hr/>
+
+
+  <div class="row">
+    <div class="col-xs-12">
+      <button *ngIf="!openAddReservation" type="button" class="btn btn-success center-block" (click)="openAddReservation = true">
+        Kreiraj rezervaciju
+      </button>
+      <button *ngIf="openAddReservation" type="button" class="btn btn-warning center-block" (click)="openAddReservation = false" >
+        Zatvori
+      </button>
+    </div>
+  </div>
+  <div class="row margin-top1" *ngIf="openAddReservation">
+    <form #seatForm="ngForm">
+      <div class="col-xs-12 col-sm-4 text-center">
+        <label for="seats">Seat number:</label>
+      </div>
+      <div class="col-xs-12 col-sm-4 text-center padding-bottom">
+        <select class="form-control" name="seats" id="seats" [(ngModel)]="selectedSeat" required>
+          <option *ngFor="let possibleReservation of getPossibleSeats()" [value]="possibleReservation.id">Row:{{possibleReservation.rowNumber}} Seat:{{possibleReservation.seatNumber}} </option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-4">
+        <button type="button" class="btn btn-success center-block" [disabled]="!seatForm.valid" (click)="addReservation()">Kreiraj rezervaciju</button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="errorMessage != ''" class="alert alert-danger margin-top1">
+    <p class="text-center text-danger">{{errorMessage}}</p>
+  </div>
+
+  <div *ngIf="reservations.length == 0" class="row margin-top">
+    <div class="col-xs-12 box-padding text-center">
+      <h4>Nema rezervacija za ovu projekciju</h4>
+    </div>
+  </div>
+  <div *ngIf="reservations.length > 0" class="margin-top">
+    <div class="row">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Broj rezervacije</th>
+          <th>Ime i prezime</th>
+          <th>Broj sjedala i reda</th>
+          <th></th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let reservation of reservations; let i = index">
+          <td>{{reservation.idReservationSeat}}</td>
+          <td *ngIf="reservation.name != null && reservation.surname != null">{{reservation.surname}}, {{reservation.name}}</td>
+          <td *ngIf="reservation.name == null && reservation.surname == null">Nepoznati korisnik</td>
+          <td  *ngIf="reservation.idReservationSeat != edit.id">Broj reda: {{reservation.rowNumber}}, broj sjedala:{{reservation.seatNumber}}</td>
+          <td *ngIf="reservation.idReservationSeat == edit.id && edit.mode == true">
+            <select  class="form-control" name="seats" [(ngModel)]="updateSelectedSeat" required>
+              <option *ngFor="let possibleReservation of getPossibleSeats()" [value]="possibleReservation.id">Broj reda:{{possibleReservation.rowNumber}}, broj sjedala:{{possibleReservation.seatNumber}} </option>
+            </select>
+          </td>
+          <td *ngIf="reservation.idReservationSeat != edit.id"><button [disabled]="edit.mode == true" class="btn btn-warning center-block" type="button"  (click)="edit = {id: reservation.idReservationSeat, mode: true}">AŽURIRAJ</button></td>
+          <td *ngIf="reservation.idReservationSeat == edit.id && edit.mode == true" >
+            <div class="btn-toolbar">
+              <button class="btn btn-success" type="button"  [disabled]="updateSelectedSeat == ''" (click)="updateReservation(reservation.id, reservation.idReservationSeat)">AŽURIRAJ</button>
+              <button class="btn btn-warning" type="button"  (click)="edit = {id:'', mode: false}; updateSelectedSeat=''">CLOSE</button>
+            </div>
+          </td>
+          <td><button [disabled]="edit.mode == true" class="btn btn-danger" type="button" (click)="deleteReservation(reservation.id, reservation.idReservationSeat)">IZBRIŠI</button></td>
+          <td><button class="btn btn-info" type="button" (click)="exportAs(reservation)">Preuzmi kartu</button></td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

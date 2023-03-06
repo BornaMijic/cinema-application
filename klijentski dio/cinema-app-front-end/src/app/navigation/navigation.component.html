@@ -1,0 +1,71 @@
+<nav *ngIf="!hideNavigation" class="navbar navigation-background-color">
+  <div class="container-fluid position-relative">
+    <div class="nav navbar-brand" >
+        <p style="cursor: pointer" routerLink="">KINO-APP</p>
+      </div>
+    <div *ngIf="innerWidth < 768" (click)="showMenu()">
+      <img *ngIf="!show" class="absolute-position menu-icon-size" src="assets/icons/open-menu.png"/>
+      <img *ngIf="show" class="absolute-position menu-icon-size" src="assets/icons/close-menu.png"/>
+
+    </div>
+    <ul class="sub-menu" *ngIf="show" class="nav navbar-nav margin-top">
+      <li routerLink="/movies"><a style="cursor: pointer">Filmovi</a></li>
+      <li routerLink="/calendar"><a style="cursor: pointer">Kalendar filmova</a></li>
+      <li *ngIf="currentUser && currentUser?.role == 'ROLE_ADMIN'" appMenuDirective>
+        <a class="menu-link"> Administracija<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li  routerLink="/administration/movies"><a style="cursor: pointer">Administracija filmova</a></li>
+          <li  routerLink="administration/users"><a style="cursor: pointer">Administracija korisnika</a></li>
+          <li  routerLink="administration/cinemaHalls"><a style="cursor: pointer">Administracija kino dvorana</a></li>
+        </ul>
+      </li>
+      <li *ngIf="currentUser"  routerLink="/reservations/uncomplete">
+        <a style="cursor: pointer"> Rezervacije({{getNumberOfTemporaryReservations()}})</a>
+      </li>
+      <li *ngIf="!currentUser"  routerLink="/login">
+        <a style="cursor: pointer"> Prijava</a>
+      </li>
+      <li *ngIf="!currentUser" routerLink="/register">
+        <a style="cursor: pointer"> Registriranje</a>
+      </li>
+      <li *ngIf="currentUser" appMenuDirective>
+        <a class="menu-link"> {{username}} <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a style="cursor: pointer" routerLink="myreservations">Moje rezervacije</a></li>
+          <li><a style="cursor: pointer" (click)="logout()" >Odjava</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <ul  class="navbar-collapse collapse nav navbar-nav">
+        <li routerLink="/movies"><a style="cursor: pointer">Filmovi</a></li>
+        <li routerLink="/calendar"><a style="cursor: pointer">Kalendar filmova</a></li>
+        <li *ngIf="currentUser && currentUser?.role == 'ROLE_ADMIN'" appMenuDirective>
+          <a class="menu-link"> Administracija<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li  routerLink="/administration/movies"><a style="cursor: pointer">Administracija filmova</a></li>
+            <li  routerLink="administration/users"><a style="cursor: pointer">Administracija korisnika</a></li>
+            <li  routerLink="administration/cinemaHalls"><a style="cursor: pointer">Administracija kino dvorana</a></li>
+          </ul>
+        </li>
+      </ul>
+    <ul class="navbar-collapse collapse nav navbar-nav navbar-right">
+      <li *ngIf="currentUser"  routerLink="/reservations/uncomplete">
+        <a style="cursor: pointer">Rezervacije({{getNumberOfTemporaryReservations()}})</a>
+      </li>
+      <li *ngIf="!currentUser"  routerLink="/login">
+        <a style="cursor: pointer"> Prijava</a>
+      </li>
+      <li *ngIf="!currentUser" routerLink="/register">
+        <a style="cursor: pointer"> Registracija</a>
+      </li>
+      <li *ngIf="currentUser"  appMenuDirective>
+          <a class="menu-link"> {{username}} <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a style="cursor: pointer" routerLink="myreservations">Moje rezervacije</a></li>
+          <li><a style="cursor: pointer" (click)="logout()">Odjava</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,78 @@
+
+
+<div class="row">
+  <div *ngIf="!transaction" class="col-xs-12 center-container margin-top">
+    <span class="go-back-button" (click)="goBack()">
+    X
+    </span>
+  </div>
+  <div class="col-xs-12 margin-top" *ngIf="errorMessagePayment.length > 0 && timer > 0 && !transaction && !buyingFailed">
+    <div class="alert alert-danger">
+      <p class="text-danger text-center">{{errorMessagePayment}}</p>
+    </div>
+  </div>
+  <div class="timer text-center" *ngIf="timer > 0 && !transaction && !buyingFailed">
+    <p>Preostalo vrijeme za potvrditi rezervaciju: {{ timer * 1000 | date:'mm:ss' }}</p>
+  </div>
+  <div [ngClass]="{'dontShow' : transaction || buyingFailed || timer <= 0}" class="row">
+    <div class="col-xs-12">
+      <div class="text-center" *ngIf="ticketInfo != null">
+        <h4>Naslov: {{ticketInfo.movie.title}} </h4>
+        <p>Datum početka: {{ticketInfo.event.date | datePipe:DATE_FORMAT}}</p>
+        <p>Vrijeme početka: {{ticketInfo.event.date | datePipe:HOUR_FORMAT}}</p>
+        <hr/>
+        <p>Cijena karata: {{ticketInfo.price | currency: 'EUR':'symbol':'.2-2':'it'}}</p>
+        <p >Broj karata: {{ticketInfo.amount}} </p>
+        <p>Ukupna cijena: {{ticketInfo.amount * ticketInfo.price  | currency: 'EUR':'symbol':'.2-2':'it'}}</p>
+        <hr/>
+      </div>
+      <div *ngIf="!created" class="text-center">
+        <p>Očitavanje...</p>
+      </div>
+      <div  [ngClass]="{'dontShow': !created && !buyingFailed}" class="text-center" #paypalRef>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="transaction && !buyingFailed" class="row margin-top">
+
+  <div *ngIf="sendEmail == true" class="col-12 alert-info padding-block">
+    <p class="text-center text-info">Provjerite da li se poruka nalazi u spam folderu na gmailu</p>
+  </div>
+
+  <div *ngIf="sendEmail == true" class="col-12 bg-info padding-block margin-top">
+    <p class="text-center text-info">Poslali smo vam karte na mail. Molimo vas da provjerite mail</p>
+    <p class="text-center text-info">Možete ponovno poslati za 15 sekundi</p>
+  </div>
+  <div *ngIf="sendEmail == false" class="col-12 bg-info padding-block margin-top">
+    <form #changeToNewEmail="ngForm">
+      <div *ngIf="gmailRequired == true" class="alert alert-danger email-send-width center-block text-center">
+        <p class="text-danger">Gmail je obavezan</p>
+      </div>
+      <input type="text" class="form-control email-send-width center-block" placeholder="primjer@gmail.com" name="email" #email="ngModel"  required ngModel email pattern="[0-9a-z._]+@gmail.com$"/>
+    <span class="text-center">
+          <p class="text-danger" *ngIf="email.errors?.['required'] && (email.touched || email.dirty)"> Email je obavezan</p>
+          <p class="text-danger" *ngIf="email.errors?.['email'] && (email.touched || email.dirty)"> Ovo nije e-mail</p>
+          <p class="text-danger" *ngIf="email.errors?.['pattern'] && (email.touched || email.dirty)"> Ilegalni znakovi u e-mailu</p>
+          <div *ngIf="email.value != null">
+            <p class="text-danger" *ngIf="!email.value.endsWith('@gmail.com') && (email.touched || email.dirty)"> Email mora biti gmail</p>
+          </div>
+        </span>
+      <button class="btn btn-primary center-block margin-top" (click)="sendMeTickets(email.value, true)" [disabled]="sendEmail || !changeToNewEmail.valid">Pošalji karte na upisani email</button>
+      <button class="btn btn-primary center-block margin-top" (click)="sendMeTickets(email.value, false)" [disabled]="sendEmail">Pošalji karte na email korisničkog računa</button>
+    </form>
+    </div>
+  <hr/>
+  <div class="col-12 padding-block">
+    <button class="btn btn-primary center-block" (click)="downloadTickets()">Preuzmi karte</button>
+  </div>
+  <hr/>
+  <button class="btn btn-primary center-block" routerLink="/">Odlazak na početnu stranicu</button>
+</div>
+<div *ngIf="buyingFailed" class="row">
+  <div  *ngIf="buyingFailed" class="col-xs-12 text-padding">
+    <h2 class="text-center text-space"> Nažalost došlo je do pogreške prilikom rezervacije sjedala</h2>
+    <button class="btn btn-primary center-block" routerLink="/">Odi na početnu stranicu</button>
+  </div>
+</div>

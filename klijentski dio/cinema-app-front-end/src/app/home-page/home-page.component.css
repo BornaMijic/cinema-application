@@ -1,0 +1,46 @@
+.img-height {
+  aspect-ratio: 6/9;
+  max-height: 250px;
+}
+
+.img-padding {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.border-item:hover{
+  background: #f0f0f0;
+}
+
+.movie-active{
+  border-radius: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.movie-active:hover {
+  background-color: rgb(145, 99, 34);
+}
+
+.min-height-news {
+  min-height: 80px;
+  max-height: 250px;
+}
+
+.border-item{
+  border: 1px solid #eeeeee;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.border-item:hover{
+  background-color: rgb(145, 99, 34);
+}
+
+.row-space {
+  margin-bottom: 25px;
+}
+
+.margin-top {
+  margin-top: 10px;
+}

@@ -1,0 +1,32 @@
+<div *ngIf="loading == true" class="col-12 text-center margin-top">
+  <p>Očitavanje...</p>
+</div>
+<div *ngIf="moviesAndEvents.length == 0 && message.length >= 1 && loading == false" class="row">
+  <div class="alert alert-info">
+    <p class="alert-info text-center">{{message}}</p>
+  </div>
+</div>
+<ul class="list-group " *ngIf="loading == false">
+  <li *ngFor="let date of dates" class="list-group-item  calendar-background">
+    <div class="row row-padding">
+      <h4 class="text-center">{{date | datePipe: DATE_FORMAT}}</h4>
+      <div class="movie-padding col-xs-12 col-sm-6 col-md-4 movie-active" *ngFor="let movieAndEvent of getEvents(date) | eventSorting: 'startHour'" (click)="navigateToEvent(movieAndEvent)">
+        <div>
+          <p class="text-center" >{{movieAndEvent.movie.title}}</p>
+          <hr/>
+          <div *ngIf="movieAndEvent.movie.imageType && movieAndEvent.movie.image">
+                      <img class="img-responsive img-height-calendar center-block" src="data:image/{{movieAndEvent.movie.imageType}};base64,{{movieAndEvent.movie.image}}" alt="Nedostupna slika"/>
+        </div>
+          <div *ngIf="!(movieAndEvent.movie.imageType && movieAndEvent.movie.image)">
+            <img class="img-responsive img-height-calendar center-block" alt="Nedostupna slika"/>
+          </div>
+          <hr/>
+          <p class="text-center">{{movieAndEvent.movie.duration}} <span *ngIf="movieAndEvent.movie.duration <= 1">minuta</span> <span *ngIf="movieAndEvent.movie.duration > 1">minute</span></p>
+          <p class="text-center">{{movieAndEvent.event.date | datePipe: HOUR_FORMAT}}</p>
+          <hr/>
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>
+

@@ -1,0 +1,73 @@
+<div *ngIf="loading == true" class="block-paddding text-center">
+  <p>Očitavanje...</p>
+</div>
+<div *ngIf="errorMessage != '' && loading == false" class="alert alert-danger">
+  <p class="text-center text-danger">{{errorMessage}}</p>
+</div>
+<form *ngIf="loading == false" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+  <div class="event-box">
+    <div class="form-group text-center">
+      <label>Datum projekcije:</label>
+      <input class="form-control input-width center-block" type="date" name="date" id="date"
+             formControlName="date"/>
+      <div *ngIf="eventForm.get('date')?.errors?.['required'] && (eventForm.get('date')?.dirty || eventForm.get('date')?.touched)">
+        <span class="text-danger" >Datum projekcije je obavezan</span>
+      </div>
+    </div>
+    <hr/>
+    <div *ngIf="!edit" class="form-group text-center" >
+      <label>Kino dvorana</label>
+      <select class="form-control input-width center-block" formControlName="idCinemaHall">
+        <option *ngFor="let cinemaHall of cinemaHalls" [value]="cinemaHall.id">{{cinemaHall.name}}</option>
+      </select>
+    </div>
+    <div *ngIf="edit && editingEvent" class="form-group text-center">
+      <label>Kino dvorana<</label>
+      <select class="form-control input-width center-block" disabled>
+        <option [value]="this.editingEvent.idCinemaHall">{{getCinemaHallName(this.editingEvent.idCinemaHall)}}</option>
+      </select>
+    </div>
+
+    <hr/>
+    <div class="form-group text-center">
+      <label>Sati početka</label>
+      <select class="form-control input-width center-block" formControlName="startHour">
+        <option *ngFor="let hour of hours" value="{{hour}}">{{hour}}</option>
+      </select>
+      <div *ngIf="eventForm.get('startHour')?.errors?.['required'] && (eventForm.get('startHour')?.dirty || eventForm.get('startHour')?.touched)">
+        <span class="text-danger">Sati početka su obavezni</span>
+      </div>
+      <label>Minute početka:</label>
+      <select class="form-control input-width center-block" formControlName="startMinute">
+        <option *ngFor="let minute of minutes" value="{{minute}}">{{minute}}</option>
+      </select>
+      <div *ngIf="eventForm.get('startMinute')?.errors?.['required'] && (eventForm.get('startMinute')?.dirty || eventForm.get('startMinute')?.touched)">
+        <span class="text-danger">Minute početka su obavezne</span>
+      </div>
+
+    </div>
+    <div class="form-group text-center">
+      <label>Cijena:</label>
+      <input class="form-control input-width center-block" type='number' step='0.01' value='0.00'
+             placeholder='0.00' name="price" id="price" formControlName="price"/>
+      <div *ngIf="eventForm?.get('price')?.errors?.['required'] && (eventForm?.get('price')?.dirty || eventForm?.get('price')?.touched)">
+        <span class="text-danger">Cijena je obavezna</span>
+      </div>
+      <div class="text-danger" *ngIf="eventForm?.get('price')?.errors?.['wrongNumber'] && (eventForm?.get('price')?.dirty || eventForm?.get('price')?.touched)">
+        <span class="text-danger">Cijena mora biti nula ili pozitivan broj</span>
+      </div>
+      <div class="text-danger" *ngIf="eventForm?.get('price')?.errors?.['maxNumberPrice'] && (eventForm?.get('price')?.dirty || eventForm?.get('price')?.touched)">
+        <span class="text-danger">Cijena mora biti jednaka ili manja od 2147483647</span>
+      </div>
+      <div class="text-danger" *ngIf="eventForm?.get('price')?.errors?.['pattern'] && (eventForm?.get('price')?.dirty || eventForm?.get('price')?.touched)">
+        <span class="text-danger">Cijena ne može imati više dva decimalna broja</span>
+      </div>
+    </div>
+    <button *ngIf="edit" class="btn btn-orange button-width center-block button-top-margin" type="submit"
+            [disabled]="!eventForm.valid">Ažuriraj
+    </button>
+    <button *ngIf="!edit" class="btn btn-orange button-width center-block button-top-margin" type="submit"
+            [disabled]="!eventForm.valid">Kreiraj
+    </button>
+  </div>
+</form>

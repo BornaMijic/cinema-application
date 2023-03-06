@@ -1,0 +1,45 @@
+.event-box{
+  border-radius: 25px;
+  border: 1px solid #eaeaea;
+  padding: 5%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.button-width{
+  width: 80%;
+}
+
+.button-bottom-margin{
+  margin-bottom: 10px;
+}
+
+.button-top-margin{
+  margin-top: 10px;
+}
+
+.input-width{
+  width: 25vw;
+}
+
+.position-relative{
+  position: relative;
+}
+
+.position-absolute{
+  position: absolute;
+  right: 2.5vw;
+  top: 20px;
+}
+
+.form-box{
+  border-radius: 20px;
+  border: 1px solid #eaeaea;
+  padding: 20px 7%  20px 7% ;
+}
+
+.block-paddding{
+  padding: 30% 20% 20% 30%
+}
+
+
